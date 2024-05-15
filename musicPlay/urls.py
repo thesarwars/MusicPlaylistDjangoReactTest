@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from playlistApp import views
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.Home, name='home'),
+    path("registration/", views.UserSignUp.as_view(), name='user-reg'),
     path("login/", views.UserLogin.as_view(), name='user-login'),
 ]

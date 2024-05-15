@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework import status
+from .serializers import UserRegistration
 
 # Create your views here.
 def Home(request):
@@ -20,3 +21,12 @@ class UserLogin(APIView):
                 return Response({'error': False, 'message': 'User logged in successfully'}, status.HTTP_200_OK)
             return Response({'error': True, 'message': "username or password doesn't match"}, status.HTTP_404_NOT_FOUND)
         return Response({'error': True, 'message': 'username or password input missing'}, status.HTTP_400_BAD_REQUEST)
+    
+    
+class UserSignUp(APIView):
+    def post(self, request):
+        serializers = UserRegistration(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response({'message': "Account created"}, status.HTTP_201_CREATED)
+        return Response(serializers.errors, status.HTTP_409_CONFLICT)
